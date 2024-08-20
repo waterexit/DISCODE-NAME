@@ -16,26 +16,30 @@ client.on('ready', () => {
 		if (interaction.data.name === 'start') {
 			let gameManager = gameManagerMap.get(interaction.channel_id);
 			if (gameManager && attachments) {
-				let url = attachments[interaction.data.options[0].value].url;
-				if (url) {
-					axios
-						.get(url)
-						.then(res => {
-							gameManager.createWords(res.data);
-						})
-						.catch(error => {
-							console.error(error)
-						})
+				try {
+					let url = attachments[interaction.data.options[0].value].url;
+					if (url) {
+						axios
+							.get(url)
+							.then(res => {
+								gameManager.createWords(res.data);
+							})
+							.catch(error => {
+								console.error(error)
+							})
+					}
+				} catch (error) {
+					interaction.reply('渡されたファイルの形式が不正です。/nカンマ区切りかどうか、単語数が足りているかなどを確認してください')
 				}
 			} else if (gameManager && !attachments) {
 				gameManager.createWords();
 			}
 		}
 	});
-});
+}); 
+   
 
-
-client.on('interactionCreate', async interaction => {
+  client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 	try {
 		if (interaction.commandName === 'prepare') {
@@ -62,7 +66,7 @@ client.on('interactionCreate', async interaction => {
 		}
 	} catch (error) {
 		console.log(error);
-		// interaction.reply(error)
+		interaction.reply("不明なエラーが発生しました。もう一度最初からやり直してください")
 	}
 });
 

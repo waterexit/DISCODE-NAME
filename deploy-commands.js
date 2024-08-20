@@ -11,7 +11,6 @@ const commands = [
     .addStringOption(o =>o.setName('input')
 			.setDescription('The input to echo back')
 			.setRequired(false)),
-    // new SlashCommandBuilder().setName('start').setDescription('ゲームを開始します'),
     new SlashCommandBuilder().setName('restart').setDescription('同じ役職で再度ゲームを行います'),
     new SlashCommandBuilder().setName('end').setDescription('現在のゲームを終了します'),
 
@@ -21,7 +20,8 @@ const commands = [
 
 const rest = new REST({ version: '9' }).setToken(token);
 
-await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+// await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+await rest.put(Routes.applicationGuildCommands(clientId), { body: commands })
 .then(() => console.log('Successfully registered application commands.'))
 .catch(e =>console.log(e.requestBody.json));
 
@@ -39,7 +39,8 @@ let  json = {
         }
     ]
 }
-let url = `https://discord.com/api/v8/applications/${clientId}/guilds/${guildId}/commands`
+// let url = `https://discord.com/api/v8/applications/${clientId}/guilds/${guildId}/commands`
+let url = `https://discord.com/api/v8/applications/${clientId}/commands`
 let headers = {
     "Authorization": `Bot ${token}`
 }
